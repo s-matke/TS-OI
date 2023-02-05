@@ -3,14 +3,6 @@ import numpy as np
 import sys
 #Inicijalizacija
 
-def isValidStep(current, visited):
-    # if current in visited:
-    #     if visited.count(current) == 2:
-    #         return False
-    # return True
-    print(current != visited)
-    return current != visited
-
 #1. Korak madjarskog metoda - transformacija koeficijenata matrice
 def RowReduction(matrix):
     matrixtmp=matrix.copy()
@@ -102,6 +94,7 @@ def CrossoutColumnsWithZerosInMarkedRows(marked_rows,matrix):
         for column in range(matrix.shape[1]):
             if matrix[index,column]==0:
                 crossedout_columns[column]=True
+    #print("Crossed out:", crossedout_columns)
     return crossedout_columns
 
 #crossedout_columns=CrossoutColumnsWithZerosInMarkedRows(marked_rows, reduced_matrix)
@@ -113,6 +106,7 @@ def MarkRowsWithIndependentZerosInCrossedoutColumns(marked_rows,crossedout_colum
         for row in range(matrix.shape[0]):         
             if zero_matrix[row,index]==1:
                 marked_rows[row]=True
+    #print("Marked: ", marked_rows)
     return marked_rows
 
 #marked_rows=MarkRowsWithIndependentZerosInCrossedoutColumns(marked_rows, crossedout_columns, zero_matrix)
@@ -174,8 +168,6 @@ def HungarianAlgorithm(matrix):
     #             zero_matrix[j,i] = 0
     #             reduced_matrix[j,i] = np.iinfo(int).max
     #             reduced_matrix[:,j] = np.iinfo(int).max
-
-    print(reduced_matrix)
     while CheckFinished(zero_matrix)==False and iterator<=100:
         
 
@@ -202,25 +194,20 @@ def HungarianAlgorithm(matrix):
         #Seventh step
         reduced_matrix=FinalMatrixTransform(crossedout_rows, crossedout_columns, reduced_matrix)
         iterator+=1
-        
-        # for i in range(zero_matrix.shape[0]):
-        #     for j in range(zero_matrix.shape[1]):
-        #         if zero_matrix[i,j] == 1 and zero_matrix[j,i] == 1:
-        #             zero_matrix[j,i] = 0
-        #             reduced_matrix[j,i] = np.iinfo(int).max
-        #             reduced_matrix[:,j] = np.iinfo(int).max
-        # print(reduced_matrix)
     print("Iteracija :" , iterator)
     return zero_matrix
 
 
 
 
-matrix = np.array([[0, 10, 15, 20],
-	[10, 0, 35, 25],
-	[15, 35, 0, 30],
-	[20, 25, 30, 0]])
-
+matrix = np.array([[2500, 4000, 3500,],
+[4000, 6000, 3500],
+[2000, 4000, 2500]])
+    #[[0, 10, 15, 20],
+	#[10, 0, 35, 25],
+	#[15, 35, 0, 30],
+	#[20, 25, 30, 0]])
+print(matrix)
 matrix[matrix == 0] = np.iinfo(int).max
                             
 solutionMatrix = HungarianAlgorithm(matrix)
